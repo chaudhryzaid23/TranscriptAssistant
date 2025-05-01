@@ -1,5 +1,6 @@
 import os
 import asyncio
+import aiofiles
 from openai import AsyncOpenAI
 
 from envVars.env_vars import openaiKey
@@ -36,7 +37,7 @@ async def convert_to_dialogue(transcript):
         return None
     
 
-def save_dialogue_to_file(dialogue, output_dir, filename):
+async def save_dialogue_to_file(dialogue, output_dir, filename):
     try:
         if not dialogue or not isinstance(dialogue, str):
             print("Error: Invalid dialogue input")
@@ -49,9 +50,9 @@ def save_dialogue_to_file(dialogue, output_dir, filename):
         # Create full file path
         file_path = os.path.join(output_dir, filename)
         
-        # Write dialogue to file
-        with open(file_path, 'w', encoding='utf-8') as f:
-            f.write(dialogue)
+        # Write dialogue to file asynchronously
+        async with aiofiles.open(file_path, 'w', encoding='utf-8') as f:
+            await f.write(dialogue)
             
         print(f"\n************ Transcription to Dialogue saved to {file_path} ******************")
     except Exception as e:
@@ -63,9 +64,9 @@ async def process_file(file_name, transcription_file_path, out_dialogue_folder_p
         transcribed_dialogue_file = transcription_file_path + file_name + ".txt"
         output_dialogue_file = out_dialogue_folder_path + file_name + ".txt"
 
-        with open(transcribed_dialogue_file, "r") as file:
+        async with aiofiles.open(transcribed_dialogue_file, "r") as file:
             print(f"************ Reading transcription for {file_name} ******************")
-            transcribed_dialogue = file.read()
+            transcribed_dialogue = await file.read()
             
             if not transcribed_dialogue:
                 print(f"Error: Empty transcription file for {file_name}")
@@ -74,7 +75,7 @@ async def process_file(file_name, transcription_file_path, out_dialogue_folder_p
             # Convert to dialogue
             dialogue = await convert_to_dialogue(transcribed_dialogue)
             if dialogue:
-                save_dialogue_to_file(dialogue, out_dialogue_folder_path, file_name + ".txt")
+                await save_dialogue_to_file(dialogue, out_dialogue_folder_path, file_name + ".txt")
             else:
                 print(f"Error: Failed to convert transcription to dialogue for {file_name}")
                 
