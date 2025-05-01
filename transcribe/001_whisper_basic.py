@@ -94,14 +94,14 @@ LANGUAGE =  'en'
 TEMP = 0.7
 
  
-text = transcribe_audio_for_whisper(MODEL, LANGUAGE, TEMP, audio_file="../Files/data/audio/CAR0001.mp3")
+text = transcribe_audio_for_whisper(MODEL, LANGUAGE, TEMP, audio_file="../Files/data/audio/RES0120.mp3")
 # print("************ Transcription completed ******************.\n", text)
 
 # Convert to dialogue
 transcribed_dialogue = convert_to_dialogue(text)
 print("\n************ Dialogue format ******************.\n", transcribed_dialogue)
 
-reference_dialogue_file = "../Files/data/text/CAR0001.txt"
+reference_dialogue_file = "../Files/data/text/RES0120.txt"
 
 with open(reference_dialogue_file, "r") as file:
     reference_dialogue = file.read()
@@ -114,5 +114,5 @@ print("\n************ Comparison Results ******************.\n", comparison_resu
 
 # Save transcribed dialogue to file
 output_dir = "../Files/data/transcription"
-filename = "CAR0001_transcribed_dialogue.txt"
+filename = "RES0120.txt"
 save_dialogue_to_file(transcribed_dialogue, output_dir, filename)
