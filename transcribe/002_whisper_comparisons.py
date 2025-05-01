@@ -43,6 +43,8 @@ Reference Dialogue:
     
 
 def save_comparison_to_file(comparison, output_dir, filename):
+
+    print(comparison)
     try:
         # Create directory if it doesn't exist
         os.makedirs(output_dir, exist_ok=True)
@@ -68,6 +70,7 @@ base_files_path = "../Files/data/"
 
 transcription_file_path = base_files_path + "transcription/"
 gt_text_folder_path = base_files_path + "text/"
+comparison_file_path = "../Files/data/comparisons"
 
 
 score_list = []
@@ -75,7 +78,7 @@ for file in os.listdir("../Files/data/audio"):
 
     file_name = file.split(".")[0]
  
-    transcribed_dialogue_file = transcription_file_path + f"{file_name}_transcribed_dialogue.txt"
+    transcribed_dialogue_file = transcription_file_path + file_name + ".txt"
     reference_dialogue_file = gt_text_folder_path + file_name + ".txt"
 
     with open(transcribed_dialogue_file, "r") as file:
@@ -90,9 +93,9 @@ for file in os.listdir("../Files/data/audio"):
     print("\n************ Comparison Results ******************.\n", comparison_result)
 
     # Save transcribed dialogue to file
-    output_dir = "../Files/data/comparisons"
-    filename = "CAR0001_comparison_results.txt"
-    save_comparison_to_file(comparison_result, output_dir, filename)
+    
+
+    save_comparison_to_file(comparison_result, comparison_file_path, file_name + ".txt")
 
     score = int(comparison_result.split("Score: ")[1].split("\n")[0])
     print("\n************ Score ******************.\n", score)
