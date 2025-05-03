@@ -32,7 +32,10 @@ Transcribed Dialogue:
 {transcribed_dialogue}
 
 Reference Dialogue:
-{reference_dialogue}"""}
+{reference_dialogue}
+
+Ignore filler words like "um", "ah" etc.
+"""}
             ],
             temperature=0.3
         )
